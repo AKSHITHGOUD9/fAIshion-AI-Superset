@@ -184,3 +184,4 @@ Contributions: feel free to raise issues or PRs for improvements. Avoid committi
 This repo is a minimal local developer stack that helps you evaluate and prototype Apache Superset with Trino (MongoDB connector) using Docker Compose. It includes a custom Superset image with the Trino driver installed and demonstrates mounting a local config file and persisting Superset state.
 
 For production, please follow the standard Superset and Trino architecture documentation and security guidance.
+git
