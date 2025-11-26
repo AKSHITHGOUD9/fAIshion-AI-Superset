@@ -1,0 +1,5 @@
+# superset_config_docker.py
+ENABLE_PROXY_FIX = True
+TALISMAN_ENABLED = False
+WTF_CSRF_ENABLED = False
+PREVENT_UNSAFE_DB_CONNECTIONS = False

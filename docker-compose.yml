@@ -1,0 +1,42 @@
+version: '3'
+services:
+  # 1. Trino (The Translator)
+  trino:
+    image: trinodb/trino:latest
+    container_name: trino
+    ports:
+      - "8080:8080"
+    volumes:
+      # Maps your local 'trino' folder to the container's catalog folder
+      - ./trino:/etc/trino/catalog
+    networks:
+      - stack-net
+
+  # 2. Superset (The Dashboard)
+  superset:
+    build: ./superset-stack  # Pointing to your renamed folder
+    container_name: superset
+    ports:
+      - "8088:8088"
+    environment:
+      # I generated this key for you to make it work immediately
+      SUPERSET_SECRET_KEY: "c2VjcmV0X2tleV_mb3Jf_zdXBlcnNldF_Byb2plY3Q="
+      TALISMAN_ENABLED: "False"
+      SUPERSET_CONFIG_PATH: /app/pythonpath/superset_config.py
+    volumes:
+      # THIS SAVES YOUR DASHBOARDS TO YOUR MAC
+      - ./superset_data:/app/superset_home
+      - ./superset_config_docker.py:/app/pythonpath/superset_config.py
+    command: >
+      /bin/sh -c "
+      superset fab create-admin --username admin --firstname Superset --lastname Admin --email admin@superset.com --password admin &&
+      superset db upgrade &&
+      superset init &&
+      /usr/bin/run-server.sh"
+    networks:
+      - stack-net
+    depends_on:
+      - trino
+
+networks:
+  stack-net:
